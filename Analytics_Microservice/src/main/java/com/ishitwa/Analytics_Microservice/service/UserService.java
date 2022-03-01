@@ -96,7 +96,7 @@ public class UserService {
     }
 
     public List<Teacher> findTopTeachers() {
-        return FeedbackService.findTopTeachers();
+        return feedbackService.findTopTeachers();
     }
 
     public Teacher addTeacherToStudent(long studentId, long teacherId) {

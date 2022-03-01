@@ -2,6 +2,8 @@ package com.ishitwa.Analytics_Microservice.service;
 
 import com.ishitwa.Analytics_Microservice.etc.Feedback;
 import com.ishitwa.Analytics_Microservice.etc.Teacher;
+import com.ishitwa.Analytics_Microservice.etc.Teachers;
+import com.ishitwa.Analytics_Microservice.etc.TeachersL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,8 +23,10 @@ public class FeedbackService {
     }
 
     // to complete top teachers function
-    public static List<Teacher> findTopTeachers() {
-        return null;
+    public List<Teacher> findTopTeachers() {
+        TeachersL teachers=new TeachersL();
+        teachers=restTemplate.getForObject("http://AUTH-SERVICE/teacher/getTop5Teachers",TeachersL.class);
+        return teachers.getTeachers();
     }
 
     public List<Feedback> getFeedbackOfTeacher(long teacherId) {
