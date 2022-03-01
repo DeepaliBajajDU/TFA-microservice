@@ -1,24 +1,32 @@
 server:
   port: 9191
 
+
 spring:
   application:
     name: API-GATEWAY
+  main:
+    web-application-type: reactive
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedHeaders:
+              - content-type
+            allowedMethods:
+              - GET
+              - POST
       routes:
         - id: AUTH-SERVICE
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/auth/**
-            - Path=/student/**
-            - Path=/teacher/**
+            - Path=/auth/**,/student/**,/teacher/**
         - id: ANALYTICS-SERVICE
           uri: lb://ANALYTICS-SERVICE
           predicates:
-            - Path=/class/**
-            - Path=/department/**
-            - Path=/subject/**
+            - Path=/class/**,/department/**,/subject/**
         - id: FEEDBACK-SERVICE
           uri: lb://FEEDBACK-SERVICE
           predicates:

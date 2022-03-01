@@ -24,6 +24,7 @@ public class DepartmentController {
         }
     }
 
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/create")
     public ResponseEntity<?> addDepartment(@RequestBody Department department){
         try{
