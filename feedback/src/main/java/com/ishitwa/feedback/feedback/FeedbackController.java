@@ -1,8 +1,7 @@
 package com.ishitwa.feedback.feedback;
 
-import com.ishitwa.FeedbackSystem.user.UserService;
-import com.ishitwa.FeedbackSystem.user.Student;
-import com.ishitwa.FeedbackSystem.user.Teacher;
+import com.ishitwa.feedback.etc.FeedbackStudent;
+import com.ishitwa.feedback.etc.FeedbackTeacher;
 import com.ishitwa.feedback.etc.Student;
 import com.ishitwa.feedback.etc.Teacher;
 import com.ishitwa.feedback.service.UserService;
@@ -69,14 +68,23 @@ public class FeedbackController {
             feedback.setQues9(points[8]);
             feedback.setQues10(points[9]);
 
-            List<Feedback> feedbackList=userService.getFeedbackList(teacher);
-            feedbackList.add(feedback);
-            teacher.setFeedbackList(feedbackList);
+//            List<Feedback> feedbackList=userService.getFeedbackList(teacher);
+//            feedbackList.add(feedback);
+//            teacher.setFeedbackList(feedbackList);
+//
+//            List<Feedback> feedbackList1=userService.getFeedbacks(student);
+//            feedbackList1.add(feedback);
+//            student.setFeedbacks(feedbackList1);
 
-            List<Feedback> feedbackList1=userService.getFeedbacks(student);
-            feedbackList1.add(feedback);
-            student.setFeedbacks(feedbackList1);
+            FeedbackStudent feedbackStudent=new FeedbackStudent();
+            FeedbackTeacher feedbackTeacher=new FeedbackTeacher();
+            feedbackStudent.setFeedbackId(feedbackStudent.getFeedbackId());
+            feedbackTeacher.setFeedbackId(feedbackTeacher.getFeedbackId());
+            feedbackStudent.setStudentId(student.getStudentId());
+            feedbackTeacher.setTeacherId(teacher.getTeacherId());
 
+            userService.addFeedbackToStudent(feedbackStudent);
+            userService.addFeedbackToTeacher(feedbackTeacher);
             feedbackService.saveFeedback(feedback);
 
             return new ResponseEntity<>(
