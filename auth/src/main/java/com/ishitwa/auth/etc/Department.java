@@ -16,6 +16,6 @@ import java.util.List;
 public class Department {
     long departmentId;
     String departmentName;
-    @JsonIgnore
-    List<Teacher> teacherList;
+//    @JsonIgnore
+//    List<Teacher> teacherList;
 }

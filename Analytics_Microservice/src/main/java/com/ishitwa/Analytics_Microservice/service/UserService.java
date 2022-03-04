@@ -1,6 +1,7 @@
 package com.ishitwa.Analytics_Microservice.service;
 
 import com.ishitwa.Analytics_Microservice.etc.*;
+import com.ishitwa.Analytics_Microservice.repository.DepartmentTeacherRepo;
 import com.ishitwa.Analytics_Microservice.repository.SubjectStudentRepo;
 import com.ishitwa.Analytics_Microservice.repository.SubjectTeacherRepo;
 import com.ishitwa.Analytics_Microservice.repository.TeacherStudentRepo;
@@ -19,6 +20,7 @@ public class UserService {
     private final SubjectStudentRepo subjectStudentRepo;
     private final SubjectTeacherRepo subjectTeacherRepo;
     private final TeacherStudentRepo teacherStudentRepo;
+    private final DepartmentTeacherRepo departmentTeacherRepo;
     private final RestTemplate restTemplate;
     private final SubjectService subjectService;
     private final FeedbackService feedbackService;
@@ -27,23 +29,25 @@ public class UserService {
     public UserService(SubjectStudentRepo subjectStudentRepo,
                        SubjectTeacherRepo subjectTeacherRepo,
                        TeacherStudentRepo teacherStudentRepo,
+                       DepartmentTeacherRepo departmentTeacherRepo,
                        RestTemplate restTemplate,
                        SubjectService subjectService,
                        FeedbackService feedbackService){
         this.subjectStudentRepo=subjectStudentRepo;
         this.subjectTeacherRepo=subjectTeacherRepo;
         this.teacherStudentRepo=teacherStudentRepo;
+        this.departmentTeacherRepo=departmentTeacherRepo;
         this.restTemplate=restTemplate;
         this.subjectService=subjectService;
         this.feedbackService=feedbackService;
     }
 
     public Teacher getTeacherFromId(long id) {
-        return restTemplate.getForObject("http://AUTH-SERVICE/auth/teacher/"+id,Teacher.class);
+        return restTemplate.getForObject("http://AUTH-SERVICE/teacher/"+id,Teacher.class);
     }
 
     public Student getStudentFromId(long id){
-        return restTemplate.getForObject("http://AUTH-SERVICE/auth/student/details/"+id,Student.class);
+        return restTemplate.getForObject("http://AUTH-SERVICE/student/details/"+id,Student.class);
     }
 
     public List<Long> getSubjectsIds(Teacher teacher){
@@ -121,5 +125,13 @@ public class UserService {
         subjectTeacher.setTeacherId(teacherId);
         subjectTeacherRepo.save(subjectTeacher);
         return subjectService.findSubjectById(subjectId);
+    }
+
+    public DepartmentTeacher addTeacherToDepartment(long teacherId,long departmentId){
+        DepartmentTeacher departmentTeacher=new DepartmentTeacher();
+        departmentTeacher.setDepartmentId(departmentId);
+        departmentTeacher.setTeacherId(teacherId);
+        departmentTeacherRepo.save(departmentTeacher);
+        return departmentTeacher;
     }
 }

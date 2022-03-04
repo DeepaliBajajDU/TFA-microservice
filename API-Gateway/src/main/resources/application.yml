@@ -26,7 +26,7 @@ spring:
         - id: ANALYTICS-SERVICE
           uri: lb://ANALYTICS-SERVICE
           predicates:
-            - Path=/class/**,/department/**,/subject/**
+            - Path=/class/**,/department/**,/subject/**,/analytics/**,/admin/**
         - id: FEEDBACK-SERVICE
           uri: lb://FEEDBACK-SERVICE
           predicates:

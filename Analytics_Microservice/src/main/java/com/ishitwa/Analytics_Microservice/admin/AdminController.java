@@ -1,15 +1,13 @@
 package com.ishitwa.Analytics_Microservice.admin;
 
+import com.ishitwa.Analytics_Microservice.etc.DepartmentTeacher;
 import com.ishitwa.Analytics_Microservice.subject.Subject;
 import com.ishitwa.Analytics_Microservice.etc.Teacher;
 import com.ishitwa.Analytics_Microservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -66,6 +64,19 @@ public class AdminController {
                     e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
+        }
+    }
+
+    @GetMapping("/department/addTeacher/{teacherId}/{departmentId}")
+    public ResponseEntity<?> addTeacherToDepartment(
+            @PathVariable long teacherId,
+            @PathVariable long departmentId
+    ){
+        try{
+            DepartmentTeacher departmentTeacher=userService.addTeacherToDepartment(teacherId,departmentId);
+            return ResponseEntity.ok().body(departmentTeacher);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

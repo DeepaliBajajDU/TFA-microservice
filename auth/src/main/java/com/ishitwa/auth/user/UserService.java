@@ -1,10 +1,8 @@
 package com.ishitwa.auth.user;
 
-import com.ishitwa.auth.etc.Class;
+import com.ishitwa.auth.etc.*;
 import com.ishitwa.auth.auth.RegisterUser;
-import com.ishitwa.auth.etc.Department;
-import com.ishitwa.auth.etc.Subject;
-import com.ishitwa.auth.etc.Subjects;
+import com.ishitwa.auth.etc.Class;
 import com.ishitwa.auth.service.ClassService;
 import com.ishitwa.auth.service.DepartmentService;
 import com.ishitwa.auth.service.SubjectService;
@@ -116,9 +114,10 @@ public class UserService {
             PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             Teacher teacher=new Teacher(user);
-            List<Teacher> teacherList=department.getTeacherList();
-            teacherList.add(teacher);
-            department.setTeacherList(teacherList);
+//            List<Teacher> teacherList=departmentService.getTeacherList(teacher);
+//            teacherList.add(teacher);
+//            department.setTeacherList(teacherList);
+            departmentService.addTeacherToDepartment(teacher);
             return teacherRepo.save(teacher);
         }catch (Exception e){
             throw new Exception(e.getMessage());
