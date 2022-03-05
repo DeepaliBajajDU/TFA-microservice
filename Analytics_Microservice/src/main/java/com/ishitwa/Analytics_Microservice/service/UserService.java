@@ -86,7 +86,7 @@ public class UserService {
         return subjects1;
     }
 
-    public Teachers getTeachersByStudent(long studentId){
+    public TeachersL getTeachersByStudent(long studentId){
         List<Long> teachers = new ArrayList<>();
         List<TeacherStudent> teacherStudents=teacherStudentRepo.findTeacherStudentsByStudentId(studentId);
         for(TeacherStudent t:teacherStudents){
@@ -95,8 +95,15 @@ public class UserService {
             }
         }
         Teachers teachers1=new Teachers();
+        TeachersL teachersL=new TeachersL();
+        List<Teacher> teacherList = new ArrayList<>();
+        for(long tid:teachers){
+            Teacher teacher=restTemplate.getForObject("http://AUTH-SERVICE/teacher/"+tid,Teacher.class);
+            teacherList.add(teacher);
+        }
+        teachersL.setTeachers(teacherList);
         teachers1.setTeachers(teachers);
-        return teachers1;
+        return teachersL;
     }
 
     public List<Teacher> findTopTeachers() {
@@ -108,7 +115,7 @@ public class UserService {
         teacherStudent.setStudentId(studentId);
         teacherStudent.setTeacherId(teacherId);
         teacherStudentRepo.save(teacherStudent);
-        return restTemplate.getForObject("http://AUTH-SERVICE/auth/teacher/"+teacherId,Teacher.class);
+        return restTemplate.getForObject("http://AUTH-SERVICE/teacher/"+teacherId,Teacher.class);
     }
 
     public Subject addSubjectToStudent(long studentId, long subjectId) {

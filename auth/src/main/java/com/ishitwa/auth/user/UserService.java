@@ -81,7 +81,7 @@ public class UserService {
     }
 
     public Student getStudentFromId(Long id)throws Exception{
-        return studentRepo.findStudentByStudentId(id);
+        return studentRepo.findById(id).get();
     }
 
 //    public Teacher addTeacherToStudent(long studentId,long teacherId)throws Exception{
@@ -117,8 +117,10 @@ public class UserService {
 //            List<Teacher> teacherList=departmentService.getTeacherList(teacher);
 //            teacherList.add(teacher);
 //            department.setTeacherList(teacherList);
-            departmentService.addTeacherToDepartment(teacher);
-            return teacherRepo.save(teacher);
+            Teacher teacher1=teacherRepo.save(teacher);
+//            System.out.println(teacher1.getTeacherId());
+            departmentService.addTeacherToDepartment(teacher1);
+            return teacher1;
         }catch (Exception e){
             throw new Exception(e.getMessage());
         }
@@ -216,8 +218,11 @@ public class UserService {
 //        }
 //    }
 
-    public List<Teacher> findTopTeachers(){
-        return teacherRepo.findTop5ByOrderByAveragePointsDesc();
+    public TeachersL findTopTeachers(){
+        TeachersL teachersL=new TeachersL();
+        List<Teacher> teachers= teacherRepo.findTop5ByOrderByAveragePointsDesc();
+        teachersL.setTeachers(teachers);
+        return teachersL;
     }
 
     public List<Student> findStudentByClass(long classId){

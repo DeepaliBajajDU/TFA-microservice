@@ -39,7 +39,7 @@ public class SubjectController {
         }
     }
 
-    @PostMapping("/find/{subjectId}")
+    @GetMapping("/find/{subjectId}")
     public ResponseEntity<?> findSubjectById(@PathVariable long subjectId){
         try{
             Subject subject= subjectService.findSubjectById(subjectId);

@@ -2,6 +2,7 @@ package com.ishitwa.auth.user;
 
 import com.ishitwa.auth.etc.Subject;
 import com.ishitwa.auth.etc.Teachers;
+import com.ishitwa.auth.etc.TeachersL;
 import com.ishitwa.auth.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -170,7 +171,7 @@ public class TeacherController {
     @GetMapping("/getTop5Teachers")
     public ResponseEntity<?> getTopTeachers(){
         try{
-            List<Teacher> teacherList=userService.findTopTeachers();
+            TeachersL teacherList=userService.findTopTeachers();
             return new ResponseEntity<>(
                     teacherList,
                     HttpStatus.OK
@@ -220,15 +221,14 @@ public class TeacherController {
             for(Student s:students){
                 if(s.getClassId()==classId)students1.add(s);
             }
-            Teachers teachers=new Teachers();
-            teachers = restTemplate.getForObject(
+            TeachersL teachers = restTemplate.getForObject(
                     "http://ANALYTICS-SERVICE/analytics/teacher/"+students1.get(0).getStudentId(),
-                       Teachers.class);
-            List<Teacher> teachers1 = new ArrayList<>();
-            for(long tid:teachers.getTeachers()){
-                teachers1.add(userService.getTeacherFromId(tid));
-            }
-            return new ResponseEntity<>(teachers1,HttpStatus.OK);
+                       TeachersL.class);
+//            List<Teacher> teachers1 = new ArrayList<>();
+//            for(long tid:teachers.getTeachers()){
+//                teachers1.add(userService.getTeacherFromId(tid));
+//            }
+            return new ResponseEntity<>(teachers.getTeachers(),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -258,6 +258,20 @@ public class TeacherController {
                     e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
+        }
+    }
+
+    @PostMapping("/updateTeacher")
+    public ResponseEntity<?> updateTeacher(@RequestBody Teacher teacher){
+        try{
+            Teacher t = userService.getTeacherFromId(teacher.getTeacherId());
+            t.setAveragePoints(teacher.getAveragePoints());
+            t.setTotalPoints(teacher.getTotalPoints());
+            t.setFeedbacks(teacher.getFeedbacks());
+            userService.updateTeacher(t);
+            return ResponseEntity.ok().body(teacher);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

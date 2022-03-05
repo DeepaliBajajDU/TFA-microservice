@@ -34,7 +34,8 @@ public class UserService {
     }
 
     public Student getStudentFromId(long studentId) {
-        return restTemplate.getForObject("http://AUTH-SERVICE/student/"+studentId,Student.class);
+        Student s= restTemplate.getForObject("http://AUTH-SERVICE/student/details/"+studentId,Student.class);
+        return s;
 
     }
 
@@ -56,5 +57,9 @@ public class UserService {
 
     public void addFeedbackToStudent(FeedbackStudent feedbackStudent){
         feedbackStudentRepo.save(feedbackStudent);
+    }
+
+    public void updateTeacher(Teacher teacher) {
+        restTemplate.postForObject("http://AUTH-SERVICE/teacher/updateTeacher",teacher,Teacher.class);
     }
 }

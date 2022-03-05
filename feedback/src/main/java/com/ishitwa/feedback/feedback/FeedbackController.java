@@ -50,6 +50,8 @@ public class FeedbackController {
             teacher.setFeedbacks(teacher.getFeedbacks()+1);
             teacher.setAveragePoints((double)teacher.getTotalPoints()/teacher.getFeedbacks());
 
+            userService.updateTeacher(teacher);
+
             Feedback feedback = new Feedback();
 
             feedback.setSubjectId(subjectId);
@@ -76,16 +78,18 @@ public class FeedbackController {
 //            feedbackList1.add(feedback);
 //            student.setFeedbacks(feedbackList1);
 
+            feedback = feedbackService.saveFeedback(feedback);
+
             FeedbackStudent feedbackStudent=new FeedbackStudent();
             FeedbackTeacher feedbackTeacher=new FeedbackTeacher();
-            feedbackStudent.setFeedbackId(feedbackStudent.getFeedbackId());
-            feedbackTeacher.setFeedbackId(feedbackTeacher.getFeedbackId());
+            feedbackStudent.setFeedbackId(feedback.getFeedbackId());
+            feedbackTeacher.setFeedbackId(feedback.getFeedbackId());
             feedbackStudent.setStudentId(student.getStudentId());
             feedbackTeacher.setTeacherId(teacher.getTeacherId());
 
             userService.addFeedbackToStudent(feedbackStudent);
             userService.addFeedbackToTeacher(feedbackTeacher);
-            feedbackService.saveFeedback(feedback);
+
 
             return new ResponseEntity<>(
                     "Successfully Submited!",

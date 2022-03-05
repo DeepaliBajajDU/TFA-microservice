@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface TeacherRepo extends JpaRepository<Teacher,Long> {
 
-    public Teacher findTeacherByUsername(String username);
+    Teacher findTeacherByUsername(String username);
 
-    public Teacher findTeacherByTeacherId(Long id);
+    Teacher findTeacherByTeacherId(Long id);
 
-    public Teacher findTeacherByToken(String token);
+    Teacher findTeacherByToken(String token);
 
-    public List<Teacher> findTeacherByDepartmentId(long id);
+    List<Teacher> findTeacherByDepartmentId(long id);
 
-    public List<Teacher> findTop5ByOrderByAveragePointsDesc();
+    List<Teacher> findTop5ByOrderByAveragePointsDesc();
 
 
 }

@@ -24,7 +24,7 @@ public class FeedbackService {
 
     // to complete top teachers function
     public List<Teacher> findTopTeachers() {
-        TeachersL teachers=new TeachersL();
+        TeachersL teachers;
         teachers=restTemplate.getForObject("http://AUTH-SERVICE/teacher/getTop5Teachers",TeachersL.class);
         return teachers.getTeachers();
     }
