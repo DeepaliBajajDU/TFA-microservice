@@ -1,12 +1,19 @@
 server:
   port: 9191
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway,metrics
+
 
 spring:
   application:
     name: API-GATEWAY
   main:
     web-application-type: reactive
+    allow-bean-definition-overriding: true
   cloud:
     gateway:
       globalcors:
